@@ -1,16 +1,16 @@
 var SecretKey = 'K3Y';
 var DefaultNumResult = 10;
 
-var restify = require('restify')
-  , userSave = require('save')('user')
+var saveJson = require('save-json');
+
+var restify = require('restify');
+var userSave = require('save')('user', {engine: saveJson('database.json')});
 
 var server = restify.createServer({ name: 'my-api' })
 
 server
   .use(restify.fullResponse())
   .use(restify.bodyParser())
-
-
 
 
 //Return the players best times for all maps
@@ -74,9 +74,13 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
   //check the SecretKey
   if(req.params.Key != SecretKey)  {return next(new restify.InvalidArgumentError('You are not Raxxy are you???'))}
 
+
 //see if the user has a time in the map already
  userSave.findOne({ Map: req.params.Map , Player: req.params.Player}, function (error, entry) {
-    if (error) { return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))    }
+    if (error.message !== 'No object found') {
+      console.log('Different error');
+      return next(error);
+    }
  
     if (entry) 
     {
@@ -109,7 +113,7 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
 
 
 
-server.listen(3000, function () {
+server.listen(process.env.PORT || 3000, function () {
   console.log('%s listening at %s', server.name, server.url)
 })
 

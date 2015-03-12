@@ -1,7 +1,9 @@
 {
-  "name": "SpeedStatd"
-, "version": "0.0.1"
-, "dependencies": {
-    "express": "latest"
+  "name": "SpeedStatd",
+  "version": "0.0.1",
+  "dependencies": {
+    "restify": "^3.0.0",
+    "save": "^2.1.0",
+    "save-json": "^0.2.1"
   }
 }
