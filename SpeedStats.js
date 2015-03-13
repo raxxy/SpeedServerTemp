@@ -93,7 +93,7 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
     if (entry) 
     {
       console.log("Old:%f New:%f", entry.Time, req.params.Time);
-      if(req.params.Time < entry.Time)
+      if(parseFloat(req.params.Time) < parseFloat(entry.Time))
       {
         console.log("New best time!!");
         entry.Time = req.params.Time;
