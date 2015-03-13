@@ -16,7 +16,11 @@ server
 //Return the players best times for all maps
 server.get('/player/:Player', function (req, res, next) {
   userSave.find({ Player: req.params.Player }, function (error, entries) {
-    if (error) { return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))}
+      if (error && error.message !== 'No objects found') {
+        console.log(error.message);
+        return next(error);
+      }
+    //if (error) { return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))}
  
     if (entries) 
     {
@@ -24,7 +28,7 @@ server.get('/player/:Player', function (req, res, next) {
     } 
     else 
     {
-      res.send(404)
+      res.send(204)
     }
   })
 })
@@ -36,7 +40,11 @@ server.get('/map/:Map/:NumResults', function (req, res, next) {
   if (req.params.Map === undefined) {return next(new restify.InvalidArgumentError('Map must be supplied'))}    
   
   userSave.find({ Map: req.params.Map }, function (error, entries) {
-    if (error) { return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))}
+      if (error && error.message !== 'No objects found') {
+        console.log(error.message);
+        return next(error);
+      }
+    //if (error) { return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))}
  
     if (entries) 
     {
@@ -55,7 +63,7 @@ server.get('/map/:Map/:NumResults', function (req, res, next) {
     } 
     else 
     {
-      res.send(404);
+      res.send(204); //required 204: clears the leaderboard  when no entries found
     }
   })
 })
@@ -77,11 +85,11 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
 
 //see if the user has a time in the map already
  userSave.findOne({ Map: req.params.Map , Player: req.params.Player}, function (error, entry) {
-    if (error.message !== 'No object found') {
-      console.log('Different error');
+    if (error && error.message !== 'No object found') {
+      console.log(error.message);
       return next(error);
     }
- 
+
     if (entry) 
     {
       if(req.params.Time < entry.Time)
