@@ -45,3 +45,7 @@ Temporary Items
 node_modules
 package.json
 database.json
+
+# Windows Installer files
+*.dll
+*.pdb
