@@ -92,6 +92,7 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
 
     if (entry) 
     {
+      console.log("Old:%f New:%f", entry.Time, req.params.Time);
       if(req.params.Time < entry.Time)
       {
         console.log("New best time!!");
@@ -105,7 +106,7 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
     } 
     else  //No entry found. make a new one
     {
-      console.log("New time");
+      console.log("New time %f",req.params.Time);
       userSave.create(
       { 
         Map: req.params.Map , 
