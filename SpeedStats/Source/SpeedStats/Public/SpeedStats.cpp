@@ -127,6 +127,18 @@ void ASpeedStats::BeginPlay()
 	UpdateLeaderBoard();
 }
 
+void ASpeedStats::PostPlayerInit_Implementation(AController* C)
+{
+	Super::PostPlayerInit_Implementation(C);
+
+	//upddate on player join
+	if (G_SpeedStats != nullptr)
+	{
+		GetWorld()->GetTimerManager().SetTimer(UpdateLeaderBoardHandle, this, &ASpeedStats::UpdateLeaderBoard, UpdateInterval, true);
+		UpdateLeaderBoard();
+	}
+}
+
 void ASpeedStats::Destroyed()
 {
 	Super::Destroyed();
@@ -304,7 +316,7 @@ void ASpeedStats::UpdateLeaderBoard_HttpComplete(FHttpRequestPtr HttpRequest, FH
 			for (auto jEntry : jEntries)
 			{
 				FHiScore NewScore;
-				double dTime;
+				double dTime = 0;
 				if (!jEntry->AsObject().IsValid() || 
 					!jEntry->AsObject()->TryGetStringField(FString(TEXT("Player")), NewScore.Player) ||
 					!jEntry->AsObject()->TryGetNumberField(FString(TEXT("Time")), dTime))

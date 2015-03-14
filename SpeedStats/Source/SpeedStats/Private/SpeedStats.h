@@ -33,6 +33,8 @@ public:
 	virtual void BeginPlay() override;
 	virtual void Destroyed() override;
 
+	virtual void PostPlayerInit_Implementation(AController* C) override;
+
 	FString MapName;
 
 	AGameState* GameState;
