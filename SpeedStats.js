@@ -13,6 +13,18 @@ server
   .use(restify.bodyParser())
 
 
+
+//Return all of the entries
+server.get('/all/:Key', function (req, res, next) {
+    if (req.params.Key === undefined) {return next(new restify.InvalidArgumentError('You are not Raxxy are you???'))}
+ 
+ userSave.find({}, function (error, users) {
+    res.send(users)
+  })
+})
+
+
+
 //Return the players best times for all maps
 server.get('/player/:Player', function (req, res, next) {
   userSave.find({ Player: req.params.Player }, function (error, entries) {
@@ -83,6 +95,8 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
   if(req.params.Key != SecretKey)  {return next(new restify.InvalidArgumentError('You are not Raxxy are you???'))}
 
 
+
+
 //see if the user has a time in the map already
  userSave.findOne({ Map: req.params.Map , Player: req.params.Player}, function (error, entry) {
     if (error && error.message !== 'No object found') {
@@ -116,6 +130,8 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
       }, function (error, user) {if (error) return next(new restify.InvalidArgumentError(JSON.stringify(error.errors)))})
     }
 
+    stop();
+
     res.send(201)
   })
 })
@@ -125,5 +141,13 @@ server.post('/save/:Map/:Player/:Time/:Key', function (req, res, next) {
 server.listen(process.env.PORT || 3000, function () {
   console.log('%s listening at %s', server.name, server.url)
 })
+
+
+
+
+
+
+
+
 
 
