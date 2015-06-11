@@ -59,7 +59,7 @@ public:
 
 	//http stuff
 	FHttpRequestPtr HttpRequest;
-	void UploadNewScore_HttpProgress(FHttpRequestPtr HttpRequest, int32 NumBytes);
+	void UploadNewScore_HttpProgress(FHttpRequestPtr HttpRequest, int32 NumBytes, int32 NumBytesRecv);
 	void UploadNewScore_HttpComplete(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded);
 	void UpdateLeaderBoard_HttpProgress(FHttpRequestPtr HttpRequest, int32 NumBytes);
 	void UpdateLeaderBoard_HttpComplete(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded);

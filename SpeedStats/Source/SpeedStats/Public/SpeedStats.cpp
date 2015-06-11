@@ -151,7 +151,7 @@ void ASpeedStats::OnNewScore(FFrame& Stack, RESULT_DECL)
 	if (G_SpeedStats == nullptr)
 	{
 		UE_LOG(SpeedStatsLog, Warning, TEXT("OnNewScore this shouldn't be happenening. "));
-		SkipFunction(Stack, Result, Stack.CurrentNativeFunction);
+		SkipFunction(Stack, RESULT_PARAM, Stack.CurrentNativeFunction);
 		return;
 	}
 	// allocate temporary memory on the stack for evaluating parameters
@@ -189,9 +189,9 @@ void ASpeedStats::OnNewScore(FFrame& Stack, RESULT_DECL)
 	if (ReturnProp != NULL)
 	{
 		// destroy old value if necessary
-		ReturnProp->DestroyValue(Result);
+		ReturnProp->DestroyValue(RESULT_PARAM);
 		// copy zero value for return property into Result
-		FMemory::Memzero(Result, ReturnProp->ArrayDim * ReturnProp->ElementSize);
+		FMemory::Memzero(RESULT_PARAM, ReturnProp->ArrayDim * ReturnProp->ElementSize);
 	}
 }
 
@@ -291,7 +291,7 @@ void ASpeedStats::UpdateLeaderBoard()
 	UE_LOG(SpeedStatsLog, Warning, TEXT("UpdateLeaderBoard() fail"));
 }
 
-void ASpeedStats::UpdateLeaderBoard_HttpProgress(FHttpRequestPtr HttpRequest, int32 NumBytes){}
+void ASpeedStats::UpdateLeaderBoard_HttpProgress(FHttpRequestPtr HttpRequest, int32 NumBytes, int32 NumBytesRecv) const{}
 void ASpeedStats::UpdateLeaderBoard_HttpComplete(FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded)
 {
 	if (bSucceeded && HttpResponse.IsValid() && HttpResponse->GetResponseCode() == EHttpResponseCodes::Ok && HttpResponse->GetContent().Num() > 0)
